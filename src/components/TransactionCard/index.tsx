@@ -1,22 +1,39 @@
-import React from 'react';
+import React from "react";
 
-import * as S from './styles';
+import * as S from "./styles";
 
-export default function TransactionCard() {
+interface Category {
+  name: string;
+  icon: string;
+};
+
+interface Data {
+  title: string;
+  amount: string;
+  category: Category;
+  date: string;
+}
+
+interface TransactionCardProps {
+  data: Data;
+}
+
+export default function TransactionCard({
+  data
+}: TransactionCardProps) {
   return (
     <S.Container>
-      <S.Title>Desenvolvimento de site</S.Title>
-      <S.Amount>R$ 12.000,00</S.Amount>
+      <S.Title>{data.title}</S.Title>
+      <S.Amount>{data.amount}</S.Amount>
 
       <S.Footer>
         <S.Category>
-          <S.Icon name="dollar-sign" />
-          <S.CategoryName>
-            Vendas
-          </S.CategoryName>
+          <S.Icon name={data.category.icon} />
+          <S.CategoryName>{data.category.name}</S.CategoryName>
         </S.Category>
-        <S.Date>13/04/2020</S.Date>
+
+        <S.Date>{data.date}</S.Date>
       </S.Footer>
     </S.Container>
-  )
+  );
 }
