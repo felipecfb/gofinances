@@ -5,26 +5,27 @@ import * as S from "./styles";
 interface Category {
   name: string;
   icon: string;
-};
+}
 
-interface Data {
+export interface TransactionCardProps {
+  type: "income" | "outcome";
   title: string;
   amount: string;
   category: Category;
   date: string;
 }
 
-interface TransactionCardProps {
+interface props {
   data: Data;
 }
 
-export default function TransactionCard({
-  data
-}: TransactionCardProps) {
+export default function TransactionCard({ data }: props) {
   return (
     <S.Container>
       <S.Title>{data.title}</S.Title>
-      <S.Amount>{data.amount}</S.Amount>
+      <S.Amount type={data.type}>
+        {data.type === "outcome" && "- "} {data.amount}
+      </S.Amount>
 
       <S.Footer>
         <S.Category>
