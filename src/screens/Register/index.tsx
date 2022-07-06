@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "../../components/Forms/Button";
 import { Input } from "../../components/Forms/Input";
 import { TransactionTypeButton } from "../../components/Forms/TransactionTypeButton";
+import { CategorySelect } from "../../components/Forms/CategorySelect";
 
 import * as S from "./styles";
 
@@ -36,6 +37,8 @@ export function Register() {
               isActive={transactionType === "outcome"}
             />
           </S.TransactionTypes>
+
+          <CategorySelect title="Categoria" />
         </S.Fields>
 
         <Button title="Enviar" />
