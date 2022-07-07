@@ -12,8 +12,7 @@ import * as S from "./styles";
 import { InputForm } from "../../components/Forms/InputForm";
 
 interface FormData {
-  name: string;
-  amount: number;
+  [name: string]: string;
 }
 
 export function Register() {
@@ -24,7 +23,7 @@ export function Register() {
     key: "category",
     name: "Categoria",
   });
-
+  
   const { control, handleSubmit } = useForm();
 
   function handleTransactionTypeSelect(type: "income" | "outcome") {
@@ -59,7 +58,7 @@ export function Register() {
 
       <S.Form>
         <S.Fields>
-          <InputForm name="name" control={control} placeholder="Nome" />
+          <InputForm control={control} name="name" placeholder="Nome" />
           <InputForm name="amount" control={control} placeholder="Preço" />
 
           <S.TransactionTypes>
