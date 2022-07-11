@@ -1,7 +1,9 @@
 import React from "react";
 
 import HighlightCard from "../../components/HightlightCard";
-import TransactionCard, { TransactionCardProps } from "../../components/TransactionCard";
+import TransactionCard, {
+  TransactionCardProps,
+} from "../../components/TransactionCard";
 
 import * as S from "./styles";
 
@@ -12,7 +14,7 @@ export interface DataListProps extends TransactionCardProps {
 export function Dashboard() {
   const data: DataListProps[] = [
     {
-      id: '1',
+      id: "1",
       type: "income",
       title: "Desenvolvimento de site",
       amount: "R$ 12.000,00",
@@ -20,7 +22,7 @@ export function Dashboard() {
       date: "13/04/2020",
     },
     {
-      id: '2',
+      id: "2",
       type: "outcome",
       title: "Hamburgueria Pizzy",
       amount: "R$ 59,00",
@@ -28,7 +30,7 @@ export function Dashboard() {
       date: "10/04/2020",
     },
     {
-      id: '3',
+      id: "3",
       type: "outcome",
       title: "Aluguel do Apartamento",
       amount: "R$ 1.200,00",
@@ -36,7 +38,7 @@ export function Dashboard() {
       date: "27/04/2020",
     },
     {
-      id: '4',
+      id: "4",
       type: "outcome",
       title: "Fatura de Luz",
       amount: "R$ 250,00",
@@ -60,7 +62,10 @@ export function Dashboard() {
               <S.UserName>Felipe</S.UserName>
             </S.User>
           </S.UserInfo>
-          <S.Icon name="power" />
+
+          <S.LogoutButton onPress={() => {}}>
+            <S.Icon name="power" />
+          </S.LogoutButton>
         </S.UserWrapper>
       </S.Header>
 
@@ -90,7 +95,7 @@ export function Dashboard() {
 
         <S.TransactionsList
           data={data}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => <TransactionCard data={item} />}
         />
       </S.Transactions>

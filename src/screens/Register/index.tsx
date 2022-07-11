@@ -52,6 +52,8 @@ export function Register() {
 
   function handleCloseSelectCategoryModal() {
     setCategoryModalOpen(false);
+
+    Alert.alert("Categoria selecionada", `${category.name}`);
   }
 
   function handleRegister(form: Partial<FormData>) {
@@ -123,7 +125,7 @@ export function Register() {
           <CategorySelect
             category={category}
             setCategory={setCategory}
-            closeSelectCategory={handleCloseSelectCategoryModal}
+            closeSelectCategory={() => handleCloseSelectCategoryModal}
           />
         </Modal>
       </S.Container>
