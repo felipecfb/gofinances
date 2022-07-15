@@ -85,14 +85,14 @@ export function Register() {
               placeholder="Nome"
               autoCapitalize="sentences"
               autoCorrect={false}
-              error={errors.name && errors.name?.message}
+              error={errors.name && errors.name.message}
             />
             <InputForm
               control={control}
               name="amount"
               placeholder="Preço"
               keyboardType="numeric"
-              error={errors.amount && errors.amount?.message}
+              error={errors.amount && errors.amount.message}
             />
 
             <S.TransactionTypes>
@@ -123,7 +123,7 @@ export function Register() {
           <CategorySelect
             category={category}
             setCategory={setCategory}
-            closeSelectCategory={() => handleCloseSelectCategoryModal}
+            closeSelectCategory={handleCloseSelectCategoryModal}
           />
         </Modal>
       </S.Container>
