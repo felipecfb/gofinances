@@ -9,20 +9,20 @@ const icons = {
 
 interface Props extends RectButtonProps {
   title: string;
-  type: "income" | "outcome";
+  transactionType: "income" | "outcome";
   isActive: boolean;
 }
 
 export function TransactionTypeButton({
   title,
-  type,
+  transactionType,
   isActive,
   ...rest
 }: Props) {
   return (
-    <S.Container isActive={isActive} type={type}>
+    <S.Container isActive={isActive} transactionType={transactionType}>
       <S.Button {...rest}>
-        <S.Icon name={icons[type]} type={type} />
+        <S.Icon name={icons[transactionType]} type={transactionType} />
         <S.Title>{title}</S.Title>
       </S.Button>
     </S.Container>

@@ -73,7 +73,7 @@ export function Dashboard() {
             </S.User>
           </S.UserInfo>
 
-          <S.LogoutButton onPress={() => {}}>
+          <S.LogoutButton>
             <S.Icon name="power" />
           </S.LogoutButton>
         </S.UserWrapper>

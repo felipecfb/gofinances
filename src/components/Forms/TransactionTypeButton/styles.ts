@@ -6,13 +6,13 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { RectButton } from "react-native-gesture-handler";
 
 export interface IconProps {
-  type: "income" | "outcome";
+  transactionType: "income" | "outcome";
   isActive: boolean;
 }
 
 interface ContainerProps {
   isActive: boolean;
-  type: "income" | "outcome";
+  transactionType: "income" | "outcome";
 }
 
 export const Container = styled.View<ContainerProps>`
@@ -23,16 +23,16 @@ export const Container = styled.View<ContainerProps>`
   border-color: ${({ theme }) => theme.colors.text};
   border-radius: 5px;
 
-  ${({ isActive, type }) =>
+  ${({ isActive, transactionType }) =>
     isActive &&
-    type === "income" &&
+    transactionType === "income" &&
     css`
       background-color: ${({ theme }) => theme.colors.sucess_light};
     `}
 
-  ${({ isActive, type }) =>
+  ${({ isActive, transactionType }) =>
     isActive &&
-    type === "outcome" &&
+    transactionType === "outcome" &&
     css`
       background-color: ${({ theme }) => theme.colors.attention_light};
     `}
@@ -50,8 +50,8 @@ export const Icon = styled(Feather)`
   font-size: ${RFValue(24)}px;
   margin-right: 12px;
 
-  color: ${({ theme, type }) =>
-    type === "income" ? theme.colors.sucess : theme.colors.attention};
+  color: ${({ theme, transactionType }) =>
+    transactionType === "income" ? theme.colors.sucess : theme.colors.attention};
 `;
 
 export const Title = styled.Text`

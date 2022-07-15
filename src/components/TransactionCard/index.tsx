@@ -23,7 +23,7 @@ export default function TransactionCard({ data }: Props) {
   return (
     <S.Container>
       <S.Title>{data.name}</S.Title>
-      <S.Amount type={data.transactionType}>
+      <S.Amount transactionType={data.transactionType}>
         {data.transactionType === "outcome" && "- "} {data.amount}
       </S.Amount>
 
