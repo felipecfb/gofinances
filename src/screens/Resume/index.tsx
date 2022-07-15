@@ -3,13 +3,15 @@ import React, { useEffect, useState } from "react";
 import { HistoryCard } from "../../components/HistoryCard";
 import { categories } from "../../utils/categories";
 import { DataListProps } from "../Dashboard";
-
 import * as S from "./styles";
+
+import { VictoryPie } from "victory-native";
 
 interface CategoryData {
   key: string;
   name: string;
-  total: string;
+  total: number;
+  totalFormatted: string;
   color: string;
 }
 
@@ -27,6 +29,10 @@ export function Resume() {
       (expensive: DataListProps) => expensive.transactionType === "outcome"
     );
 
+    const expensivesTotal = expensives.reduce((accumulator: DataListProps, expensive) => {
+      return accumulator + expensive.value;
+    })
+
     const totalByCategory: CategoryData[] = [];
 
     categories.forEach((category) => {
@@ -39,23 +45,22 @@ export function Resume() {
       });
 
       if (categorySum > 0) {
+        const totalFormatted = categorySum.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+
         totalByCategory.push({
           key: category.key,
           name: category.name,
-          total: categorySum.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }),
           color: category.color,
+          total: categorySum,
+          totalFormatted,
         });
       }
     });
 
     setTotalByCategories(totalByCategory);
-
-    const incomes = responseFormatted.filter(
-      (income: DataListProps) => income.transactionType === "income"
-    );
   }
 
   useEffect(() => {
@@ -68,11 +73,15 @@ export function Resume() {
         <S.Title>Resumo por categoria</S.Title>
       </S.Header>
       <S.Content>
+        <S.ChartContainer>
+          <VictoryPie data={totalByCategories} x="name" y="total" />
+        </S.ChartContainer>
+
         {totalByCategories.map((item) => (
           <HistoryCard
             key={item.key}
             title={item.name}
-            amount={item.total}
+            amount={item.totalFormatted}
             color={item.color}
           />
         ))}

@@ -22,7 +22,7 @@ export function TransactionTypeButton({
   return (
     <S.Container isActive={isActive} transactionType={transactionType}>
       <S.Button {...rest}>
-        <S.Icon name={icons[transactionType]} type={transactionType} />
+        <S.Icon name={icons[transactionType]} transactionType={transactionType} />
         <S.Title>{title}</S.Title>
       </S.Button>
     </S.Container>

@@ -51,7 +51,9 @@ export const Icon = styled(Feather)`
   margin-right: 12px;
 
   color: ${({ theme, transactionType }) =>
-    transactionType === "income" ? theme.colors.sucess : theme.colors.attention};
+    transactionType === "income"
+      ? theme.colors.sucess
+      : theme.colors.attention};
 `;
 
 export const Title = styled.Text`
