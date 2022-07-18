@@ -7,12 +7,24 @@ import * as S from "./styles";
 
 import { VictoryPie } from "victory-native";
 
+import { RFValue } from 'react-native-responsive-fontsize';
+import theme from "../../global/styles/theme";
+
+interface TransactionData {
+  type: "income" | "outcome";
+  name: string;
+  amount: string;
+  category: string;
+  date: string;
+}
+
 interface CategoryData {
   key: string;
   name: string;
   total: number;
   totalFormatted: string;
   color: string;
+  percent: string;
 }
 
 export function Resume() {
@@ -29,9 +41,12 @@ export function Resume() {
       (expensive: DataListProps) => expensive.transactionType === "outcome"
     );
 
-    const expensivesTotal = expensives.reduce((accumulator: DataListProps, expensive) => {
-      return accumulator + expensive.value;
-    })
+    const expensivesTotal = expensives.reduce(
+      (acumullator: number, expensive: TransactionData) => {
+        return acumullator + Number(expensive.amount);
+      },
+      0
+    );
 
     const totalByCategory: CategoryData[] = [];
 
@@ -50,12 +65,17 @@ export function Resume() {
           currency: "BRL",
         });
 
+        const percent = `${((categorySum / expensivesTotal) * 100).toFixed(
+          0
+        )}%`;
+
         totalByCategory.push({
           key: category.key,
           name: category.name,
           color: category.color,
           total: categorySum,
           totalFormatted,
+          percent,
         });
       }
     });
@@ -74,7 +94,20 @@ export function Resume() {
       </S.Header>
       <S.Content>
         <S.ChartContainer>
-          <VictoryPie data={totalByCategories} x="name" y="total" />
+          <VictoryPie
+            data={totalByCategories}
+            colorScale={totalByCategories.map((category) => category.color)}
+            style={{
+              labels: {
+                fontSize: RFValue(18),
+                fontWeight: "bold",
+                fill: theme.colors.shape,
+              }
+            }}
+            labelRadius={50}
+            x="percent"
+            y="total"
+          />
         </S.ChartContainer>
 
         {totalByCategories.map((item) => (
