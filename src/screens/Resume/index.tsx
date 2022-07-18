@@ -7,8 +7,11 @@ import * as S from "./styles";
 
 import { VictoryPie } from "victory-native";
 
-import { RFValue } from 'react-native-responsive-fontsize';
+import { RFValue } from "react-native-responsive-fontsize";
 import theme from "../../global/styles/theme";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { addMonths, subMonths, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 interface TransactionData {
   type: "income" | "outcome";
@@ -28,9 +31,18 @@ interface CategoryData {
 }
 
 export function Resume() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>(
     []
   );
+
+  function handleChangeDate(action: "next" | "prev") {
+    if (action === "next") {
+      setSelectedDate(addMonths(selectedDate, 1));
+    } else {
+      setSelectedDate(subMonths(selectedDate, 1));
+    }
+  }
 
   async function loadData() {
     const dataKey = "@gofinance:transactions";
@@ -38,8 +50,13 @@ export function Resume() {
     const responseFormatted = response ? JSON.parse(response) : [];
 
     const expensives = responseFormatted.filter(
-      (expensive: DataListProps) => expensive.transactionType === "outcome"
+      (expensive: DataListProps) => 
+      expensive.transactionType === "outcome" &&
+      new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
+      new Date(expensive.date).getFullYear() === selectedDate.getFullYear()
     );
+
+    console.log(expensives);
 
     const expensivesTotal = expensives.reduce(
       (acumullator: number, expensive: TransactionData) => {
@@ -85,14 +102,35 @@ export function Resume() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [selectedDate]);
 
   return (
     <S.Container>
       <S.Header>
         <S.Title>Resumo por categoria</S.Title>
       </S.Header>
-      <S.Content>
+      <S.Content
+        showVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingBottom: useBottomTabBarHeight(),
+        }}
+      >
+        <S.MonthSelect>
+          <S.MothSelectButton onPress={() => handleChangeDate("prev")}>
+            <S.MonthSelectIcon name="chevron-left" />
+          </S.MothSelectButton>
+
+          <S.Month>
+            {format(selectedDate, "MMMM, yyyy", {
+              locale: ptBR,
+            })}
+          </S.Month>
+          <S.MothSelectButton onPress={() => handleChangeDate("next")}>
+            <S.MonthSelectIcon name="chevron-right" />
+          </S.MothSelectButton>
+        </S.MonthSelect>
+
         <S.ChartContainer>
           <VictoryPie
             data={totalByCategories}
@@ -102,7 +140,7 @@ export function Resume() {
                 fontSize: RFValue(18),
                 fontWeight: "bold",
                 fill: theme.colors.shape,
-              }
+              },
             }}
             labelRadius={50}
             x="percent"
