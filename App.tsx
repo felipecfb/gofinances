@@ -22,6 +22,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AppRoutes } from "./src/routes/app.routes";
 import { SignIn } from "./src/screens/SignIn";
 
+import { AuthContextProvider } from './src/hooks/auth';
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App(): JSX.Element {
@@ -67,7 +69,9 @@ export default function App(): JSX.Element {
         <ThemeProvider theme={theme}>
           <NavigationContainer>
             <StatusBar barStyle="light-content" />
+            <AuthContextProvider>
             <SignIn />
+            </AuthContextProvider>
           </NavigationContainer>
         </ThemeProvider>
       </GestureHandlerRootView>
