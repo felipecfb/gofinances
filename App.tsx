@@ -1,25 +1,26 @@
 import "react-native-gesture-handler";
 import "intl";
 import "intl/locale-data/jsonp/pt-BR";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { ThemeProvider } from "styled-components";
+import { StatusBar, View } from "react-native";
 
+import { ThemeProvider } from "styled-components";
+import theme from "./src/global/styles/theme";
+
+import * as Font from "expo-font";
 import {
   Poppins_400Regular,
   Poppins_500Medium,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 
-import theme from "./src/global/styles/theme";
-
 import * as SplashScreen from "expo-splash-screen";
-import * as Font from "expo-font";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { AppRoutes } from "./src/routes/app.routes";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { StatusBar, View } from "react-native";
+import { SignIn } from "./src/screens/SignIn";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -66,7 +67,7 @@ export default function App(): JSX.Element {
         <ThemeProvider theme={theme}>
           <NavigationContainer>
             <StatusBar barStyle="light-content" />
-            <AppRoutes />
+            <SignIn />
           </NavigationContainer>
         </ThemeProvider>
       </GestureHandlerRootView>
