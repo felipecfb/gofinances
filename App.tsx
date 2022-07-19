@@ -22,7 +22,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AppRoutes } from "./src/routes/app.routes";
 import { SignIn } from "./src/screens/SignIn";
 
-import { AuthContextProvider } from './src/hooks/auth';
+import { AuthContextProvider } from "./src/hooks/auth";
+import { Routes } from "./src/routes";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -67,12 +68,10 @@ export default function App(): JSX.Element {
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
         <ThemeProvider theme={theme}>
-          <NavigationContainer>
-            <StatusBar barStyle="light-content" />
-            <AuthContextProvider>
-            <SignIn />
-            </AuthContextProvider>
-          </NavigationContainer>
+          <StatusBar barStyle="light-content" />
+          <AuthContextProvider>
+            <Routes />
+          </AuthContextProvider>
         </ThemeProvider>
       </GestureHandlerRootView>
     </View>
