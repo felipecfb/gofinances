@@ -103,7 +103,6 @@ export function Register() {
 
       await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
       clearForm();
-      console.log(newTransaction);
     } catch (error) {
       console.log(error);
       Alert.alert("Não foi possível salvar.");

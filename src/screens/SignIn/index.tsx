@@ -14,32 +14,29 @@ import theme from "../../global/styles/theme";
 export function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, signInWithApple } = useAuth();
 
   async function handleSignInWithGoogle() {
     try {
       setIsLoading(true);
-      return await signInWithGoogle();    
-  
+      return await signInWithGoogle();
     } catch (error) {
       console.log(error);
-      Alert.alert('Não foi possível conectar a conta Google');
-    } finally {
+      Alert.alert("Não foi possível conectar a conta Google");
       setIsLoading(false);
     }
   }
 
-  /* async function handleSignInWithApple() {
+  async function handleSignInWithApple() {
     try {
       setIsLoading(true);
       return await signInWithApple();
-      
     } catch (error) {
-      Alert.alert('Não foi possível conectar a conta Apple');
-    } finally {
+      console.log(error);
+      Alert.alert("Não foi possível conectar a conta Apple");
       setIsLoading(false);
     }
-  } */
+  }
 
   return (
     <S.Container>
@@ -52,16 +49,30 @@ export function SignIn() {
           </S.Title>
         </S.TitleWrapper>
 
-        <S.SignInTitle>Faça seu login com {"\n"} uma das contas abaixo</S.SignInTitle>
+        <S.SignInTitle>
+          Faça seu login com {"\n"} uma das contas abaixo
+        </S.SignInTitle>
       </S.Header>
 
       <S.Footer>
         <S.FooterWrapper>
-          <SignInSocialButton title="Entrar com Google" svg={GoogleSvg} onPress={handleSignInWithGoogle} />
-          <SignInSocialButton title="Entrar com Apple" svg={AppleSvg} />
+          <SignInSocialButton
+            title="Entrar com Google"
+            svg={GoogleSvg}
+            onPress={handleSignInWithGoogle}
+          />
+          <SignInSocialButton
+            title="Entrar com Apple"
+            svg={AppleSvg}
+            onPress={handleSignInWithApple}
+          />
         </S.FooterWrapper>
-        { isLoading ? <ActivityIndicator color={theme.colors.shape} style={{ marginTop: 18 }} /> : null }
-
+        {isLoading ? (
+          <ActivityIndicator
+            color={theme.colors.shape}
+            style={{ marginTop: 18 }}
+          />
+        ) : null}
       </S.Footer>
     </S.Container>
   );
