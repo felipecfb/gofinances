@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import * as S from "./styles";
 import { RFValue } from "react-native-responsive-fontsize";
 
@@ -8,31 +8,38 @@ import { useAuth } from "../../hooks/auth";
 import AppleSvg from "../../assets/apple.svg";
 import GoogleSvg from "../../assets/google.svg";
 import LogoSvg from "../../assets/logo.svg";
-import { Alert } from "react-native";
+import { ActivityIndicator, Alert } from "react-native";
+import theme from "../../global/styles/theme";
 
 export function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { signInWithGoogle, signInWithApple } = useAuth();
+  const { signInWithGoogle } = useAuth();
 
   async function handleSignInWithGoogle() {
     try {
-      await signInWithGoogle();    
-      
+      setIsLoading(true);
+      return await signInWithGoogle();    
+  
     } catch (error) {
       console.log(error);
       Alert.alert('Não foi possível conectar a conta Google');
+    } finally {
+      setIsLoading(false);
     }
   }
 
-  async function handleSignInWithApple() {
+  /* async function handleSignInWithApple() {
     try {
-      await signInWithApple();
+      setIsLoading(true);
+      return await signInWithApple();
       
     } catch (error) {
-      console.log(error);
       Alert.alert('Não foi possível conectar a conta Apple');
+    } finally {
+      setIsLoading(false);
     }
-  }
+  } */
 
   return (
     <S.Container>
@@ -51,8 +58,10 @@ export function SignIn() {
       <S.Footer>
         <S.FooterWrapper>
           <SignInSocialButton title="Entrar com Google" svg={GoogleSvg} onPress={handleSignInWithGoogle} />
-          <SignInSocialButton title="Entrar com Apple" svg={AppleSvg} onPress={handleSignInWithApple} />
+          <SignInSocialButton title="Entrar com Apple" svg={AppleSvg} />
         </S.FooterWrapper>
+        { isLoading ? <ActivityIndicator color={theme.colors.shape} style={{ marginTop: 18 }} /> : null }
+
       </S.Footer>
     </S.Container>
   );

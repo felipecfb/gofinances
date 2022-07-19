@@ -15,14 +15,18 @@ interface AuthProviderProps {
 }
 
 type User = {
-  id: string;
-  email: string;
+  id: string | null;
+  name: string | null;
+  email: string | null;
+  photo: string | null;
 };
 
 interface IAuthContextData {
   user: User;
   signInWithGoogle: () => void;
   signInWithApple: () => void;
+  signOut: () => void;
+  userStorageLoading: boolean;
 }
 
 interface AuthorizationResponse {
@@ -55,13 +59,15 @@ function AuthContextProvider({ children }: AuthProviderProps) {
 
       if (type === "success") {
         const response = await fetch(
-          `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${params.access_token}`
+          `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${params.access_token}`
         );
         const userInfo = await response.json();
 
         const userLogged = {
-          id: userInfo.user_id,
+          id: userInfo.id,
+          name: userInfo.name,
           email: userInfo.email,
+          photo: userInfo.picture,
         };
 
         setUser(userLogged);
@@ -82,9 +88,13 @@ function AuthContextProvider({ children }: AuthProviderProps) {
       });
 
       if (credential) {
+        const name = credential.fullName!.givenName;
+        const photo = `https://ui-avatars.com/api/?name=${name}?lenght=1`;
         const userLogged = {
           id: String(credential.user),
+          name,
           email: credential.email!,
+          photo,
         };
 
         setUser(userLogged);
@@ -93,6 +103,11 @@ function AuthContextProvider({ children }: AuthProviderProps) {
     } catch (error: any) {
       throw new Error(error);
     }
+  }
+
+  async function signOut() {
+    setUser({} as User);
+    await AsyncStorage.removeItem(userStorageKey);
   }
 
   useEffect(() => {
@@ -114,6 +129,8 @@ function AuthContextProvider({ children }: AuthProviderProps) {
         user,
         signInWithGoogle,
         signInWithApple,
+        signOut,
+        userStorageLoading,
       }}
     >
       {children}

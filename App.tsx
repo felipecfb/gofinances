@@ -18,16 +18,13 @@ import {
 
 import * as SplashScreen from "expo-splash-screen";
 
-import { NavigationContainer } from "@react-navigation/native";
-import { AppRoutes } from "./src/routes/app.routes";
-import { SignIn } from "./src/screens/SignIn";
-
-import { AuthContextProvider } from "./src/hooks/auth";
+import { AuthContextProvider, useAuth } from "./src/hooks/auth";
 import { Routes } from "./src/routes";
+import AppLoading from "expo-app-loading";
 
 SplashScreen.preventAutoHideAsync();
 
-export default function App(): JSX.Element {
+export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
@@ -55,7 +52,9 @@ export default function App(): JSX.Element {
     }
   }, [appIsReady]);
 
-  if (!appIsReady) {
+  const { userStorageLoading } = useAuth();
+
+  if (!appIsReady || userStorageLoading) {
     return <View />;
   }
 
